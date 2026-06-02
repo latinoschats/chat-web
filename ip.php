@@ -1,11 +1,24 @@
-if (empty($_SERVER["QUERY_STRING"])){
-    $Fichero = "archivo.txt"; //nombre del fichero donde se guardan los informes.
-    $ip = $_SERVER["REMOTE_ADDR"]; //guarda en la variable el ip 
-    $fecha = date("Y-m-d;H:i:s"); //fecha y hora (por lo general del servidor) 
-    $sistema = $_SERVER['HTTP_USER_AGENT']; //Esto nos genera varios datos del navegador y del sistema operativo 
-    $conproxy = $_SERVER["HTTP_X_FORWARDED_FOR"]; //En caso de usar proxy para esconderse aqui estaria el ip real
-    $log = "FECHA: $fecha SISTEMA: $sistema IP: $ip IPPROXY: $conproxy \x0D\x0A"; 
-    $fp = fopen($Fichero, "a" ); 
-    fwrite($fp, $log); 
-    fclose($fp); 
+<?php
+// Nombre del archivo donde se guardarán las visitas
+$archivo = "visitas.txt";
+
+// Obtener la IP del visitante
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $ip = $_SERVER['REMOTE_ADDR'];
 }
+
+// Obtener la fecha y hora actual
+$fecha = date("Y-m-d H:i:s");
+
+// Crear la línea a guardar
+$linea = $ip . " - " . $fecha . "\n";
+
+// Guardar la línea en el archivo (modo append)
+file_put_contents($archivo, $linea, FILE_APPEND);
+
+echo "Tu visita ha sido registrada.";
+?>
