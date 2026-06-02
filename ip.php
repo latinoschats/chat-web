@@ -1,24 +1,13 @@
-<?php
-// Nombre del archivo donde se guardarán las visitas
-$archivo = "visitas.txt";
+<?PHP
+// IP Address Logger
+/* to use this simply put this code into a php file named
+log.php, then either include it into your main page website
+or just direct the person to this page. make sure you have a
+log.txt file in your root directory of the server for it to save
+all ip logs too. */
 
-// Obtener la IP del visitante
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-    $ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-    $ip = $_SERVER['REMOTE_ADDR'];
-}
-
-// Obtener la fecha y hora actual
-$fecha = date("Y-m-d H:i:s");
-
-// Crear la línea a guardar
-$linea = $ip . " - " . $fecha . "\n";
-
-// Guardar la línea en el archivo (modo append)
-file_put_contents($archivo, $linea, FILE_APPEND);
-
-echo "Tu visita ha sido registrada.";
+$ip = getenv("REMOTE_ADDR");
+$filename = "log.txt";
+$myfile = fopen($filename, "a+") or die("Couldn't open file");
+fwrite($myfile, $ip) or die("Couldn't write to file");
 ?>
