@@ -1,34 +1,35 @@
 <?php
-
-/* HECHO POR tttony 2007 */
-
-function referer() {
-// IP del cliente
-$remote_ip = (isset($_SERVER[’REMOTE_ADDR’])) ? $_SERVER[’REMOTE_ADDR’] : “(Sin IP)”;
-// ISP del cliente
-$remote_isp = gethostbyaddr($remote_ip);
-// Aqui la pagina que lo refirio
-$referer = (isset($_SERVER[’HTTP_REFERER’])) ? strtolower($_SERVER[’HTTP_REFERER’]) : “error”;
-// No guardar mis propios referes :)
-$my_host = strpos($referer, $_SERVER[’HTTP_HOST’]);
-
-if (($referer != “error”) && ($my_host === false)) {
-$file = “referer.txt”;
-$fo = @fopen($file, “rb”);
-$content = (is_resource($fo)) ? @fread($fo, filesize($filename)) : “”;
-@fclose($fo);
-
-$exist_ip = strpos($content, $remote_ip);
-$exist_ref = strpos($content, $referer);
-if (($exist_ip === false) || ($exist_ref === false)) {
-$str = time() . ” ” . $remote_ip . “(” . $remote_isp . “) ” . $referer . “n”;
-$fo = @fopen($file, “ab”);
-if (is_resource($fo)) @fwrite($fo, $str);
-@fclose($fo);
+session_start();
+$file = 'comments.txt';
+$reverse = true;
+ 
+if(!empty($_POST['token']) && !empty($_SESSION['token']) && $_SESSION['token'] != $_POST['token']){
+    $txt = array();
+    foreach($_POST as $key => $val){ $txt[$key] = $val; }
+    $txt['ip'] = $_SERVER['REMOTE_ADDR'];
+    file_put_contents($file, serialize($txt) . PHP_EOL, FILE_APPEND);
 }
+$_SESSION['token'] = !empty($_POST['token']) ? $_POST['token'] : mt_rand();
+?>
+ 
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <input type="hidden" name="token" value="<?php echo mt_rand(); ?>" />
+    <input type="text" name="Name" /><br />
+    <textarea name="comment" cols="30" rows="5"></textarea><br />
+    <input type="submit" />
+</form>
+ 
+<?php
+if(file_exists($file)){
+    $comments = $reverse ? array_reverse(file($file)) : file($file);
+    foreach($comments as $val){
+        $data = unserialize($val);
+?>
+    <fieldset>
+        <legend><?php echo $data['Name'] . ' ' . $data['ip']; ?></legend>
+        <?php echo $data['comment']; ?>
+    </fieldset>
+<?php
+    }
 }
-}
-
-referer();
-
 ?>
