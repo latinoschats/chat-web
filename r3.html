@@ -11,8 +11,8 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
-        background: #ffffff;
-        color: #1f2937;
+        background: #111827;
+        color: #f3f4f6;
     min-height: 100vh;
   }
 
@@ -63,7 +63,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .08em;
-    color: #6b7280;
+    color: #9ca3af;
     margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -80,7 +80,7 @@
     font-weight: 500;
     letter-spacing: 0;
     text-transform: none;
-    background: rgba(37,99,235,.10);
+    background: rgba(255,255,255,.08);
     color: #2563eb;
     border-radius: 20px;
     padding: 1px 6px;
@@ -105,7 +105,7 @@
   }
   .now-artist {
     font-size: .78rem;
-    color: #6b7280;
+    color: #9ca3af;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -160,13 +160,13 @@
 
   /* Volume */
   .vol-wrap { flex: 1; display: flex; align-items: center; gap: 6px; }
-  .vol-icon { color: #6b7280; flex-shrink: 0; }
+  .vol-icon { color: #9ca3af; flex-shrink: 0; }
   input[type=range] {
     flex: 1;
     -webkit-appearance: none;
     height: 3px;
     border-radius: 2px;
-    background: #f3f4f6;
+    background: #1f2937;
     outline: none;
   }
   input[type=range]::-webkit-slider-thumb {
@@ -190,7 +190,7 @@
 
   /* ── Historial ── */
   .history-section {
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid #1f2937;
     padding-top: 10px;
     margin-top: 2px;
   }
@@ -199,7 +199,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .08em;
-    color: #6b7280;
+    color: #9ca3af;
     margin-bottom: 8px;
   }
   .history-list { list-style: none; }
@@ -208,7 +208,7 @@
     align-items: center;
     gap: 8px;
     padding: 5px 0;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid #1f2937;
   }
   .history-item:last-child { border-bottom: none; }
   .history-thumb {
@@ -216,7 +216,7 @@
     border-radius: 4px;
     object-fit: cover;
     flex-shrink: 0;
-    background: #f3f4f6;
+    background: #1f2937;
   }
   .history-meta { flex: 1; min-width: 0; }
   .history-song {
@@ -228,19 +228,19 @@
   }
   .history-artist {
     font-size: .7rem;
-    color: #6b7280;
+    color: #9ca3af;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .history-time {
     font-size: .65rem;
-    color: #6b7280;
+    color: #9ca3af;
     flex-shrink: 0;
   }
   .history-empty {
     font-size: .78rem;
-    color: #6b7280;
+    color: #9ca3af;
     text-align: center;
     padding: 10px 0;
   }
@@ -264,14 +264,28 @@
           <span class="live-dot"></span>
           <span id="listeners-count">0</span>
         </span>
-      </div>
+              </div>
               <div class="now-title" id="now-title">—</div>
         <div class="now-artist" id="now-artist"></div>
+            <div class="controls-row">
+        <button class="play-btn" id="play-btn" title="Reproducir / Pausar">
+          <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="bars" id="bars">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="vol-wrap">
+          <svg class="vol-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          </svg>
+          <input type="range" id="vol-slider" min="0" max="100" value="80">
+        </div>
+      </div>
     </div>
   </div>
 
-  <audio id="audio-el" preload="none" ></audio>
-</div>
+  
+
 <script>
 (function() {
   const audio     = document.getElementById('audio-el');
@@ -344,28 +358,10 @@
     if (errorBar) errorBar.style.display = show ? 'block' : 'none';
   }
 
-  // ── Carátula ──
-  async function fetchCover(artista, titulo) {
-    if (!artista || !titulo) return DEFAULT_COVER;
-    try {
-      const r = await fetch(`${CARAT_URL}?artista=${encodeURIComponent(artista)}&titulo=${encodeURIComponent(titulo)}`);
-      if (!r.ok) return DEFAULT_COVER;
-      const d = await r.json();
-      return (d.imagen && !d.error) ? d.imagen : DEFAULT_COVER;
-    } catch { return DEFAULT_COVER; }
-  }
-
-  function setCover(src) {
-    coverWrap.classList.add('loading');
-    const tmp = new Image();
-    tmp.onload  = () => { coverImg.src = src; coverWrap.classList.remove('loading'); };
-    tmp.onerror = () => { coverImg.src = DEFAULT_COVER; coverWrap.classList.remove('loading'); };
-    tmp.src = src;
-  }
-
+  
   // ── Metadatos ──
   // Valores genéricos que indican que no hay canción real
-  const GEN_TITULOS  = new Set(['Desconocido', 'En vivo', '']);
+  const GEN_TITULOS  = new Set(['Sin título', 'En vivo', '']);
   const GEN_ARTISTAS = new Set(['Desconocido', '']);
 
   async function fetchMeta() {
@@ -385,12 +381,12 @@
         return;
       }
 
-      const titulo  = d.title  || Desconocido  || '';
-      const artista = d.artist || Desconocido || '';
+      const titulo  = d.title  || d.titulo  || '';
+      const artista = d.artist || d.artista || '';
 
       if (SHOW_TITLES) {
-        if (nowTitle)  nowTitle.textContent  = Desconocido  || '—';
-        if (nowArtist) nowArtist.textContent = Desconocido || '';
+        if (nowTitle)  nowTitle.textContent  = titulo  || '—';
+        if (nowArtist) nowArtist.textContent = artista || '';
       }
 
       // Oyentes
@@ -402,7 +398,7 @@
 
       // Carátula: basta con que haya título válido
       // (para artista "Desconocido" el servidor usa iTunes como fuente)
-      const key = Desconocido + '|' + Desconocido;
+      const key = titulo + '|' + artista;
       if (key !== lastTitle) {
         const prevKey = lastTitle;   // '' = carga inicial
         lastTitle = key;
@@ -414,7 +410,7 @@
               setCover(serverCover);
             } else {
               // 2. /api/caratula → local → Last.fm → iTunes → predeterminada
-              const cover = await fetchCover(Desconocido, Desconocido);
+              const cover = await fetchCover(artista, titulo);
               setCover(cover);
             }
           };
@@ -449,8 +445,8 @@
         return `<li class="history-item">
           <img class="history-thumb" src="${thumb}" alt="" onerror="this.src='${DEFAULT_COVER}'">
           <div class="history-meta">
-            <div class="history-song">${escHtml(item.Desconocido || '—')}</div>
-            <div class="history-artist">${escHtml(item.Desconocido || '')}</div>
+            <div class="history-song">${escHtml(item.titulo || '—')}</div>
+            <div class="history-artist">${escHtml(item.artista || '')}</div>
           </div>
           <span class="history-time">${hora}</span>
         </li>`;
@@ -473,4 +469,5 @@
 </script>
 </body>
 </html>
+
 
