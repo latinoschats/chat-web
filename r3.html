@@ -365,7 +365,7 @@
 
   // ── Metadatos ──
   // Valores genéricos que indican que no hay canción real
-  const GEN_TITULOS  = new Set(['Sin título', 'En vivo', '']);
+  const GEN_TITULOS  = new Set(['Desconocido', 'En vivo', '']);
   const GEN_ARTISTAS = new Set(['Desconocido', '']);
 
   async function fetchMeta() {
@@ -385,12 +385,12 @@
         return;
       }
 
-      const titulo  = d.title  || d.titulo  || '';
-      const artista = d.artist || d.artista || '';
+      const titulo  = d.title  || Desconocido  || '';
+      const artista = d.artist || Desconocido || '';
 
       if (SHOW_TITLES) {
-        if (nowTitle)  nowTitle.textContent  = titulo  || '—';
-        if (nowArtist) nowArtist.textContent = artista || '';
+        if (nowTitle)  nowTitle.textContent  = Desconocido  || '—';
+        if (nowArtist) nowArtist.textContent = Desconocido || '';
       }
 
       // Oyentes
@@ -402,7 +402,7 @@
 
       // Carátula: basta con que haya título válido
       // (para artista "Desconocido" el servidor usa iTunes como fuente)
-      const key = titulo + '|' + artista;
+      const key = Desconocido + '|' + Desconocido;
       if (key !== lastTitle) {
         const prevKey = lastTitle;   // '' = carga inicial
         lastTitle = key;
@@ -414,7 +414,7 @@
               setCover(serverCover);
             } else {
               // 2. /api/caratula → local → Last.fm → iTunes → predeterminada
-              const cover = await fetchCover(artista, titulo);
+              const cover = await fetchCover(Desconocido, Desconocido);
               setCover(cover);
             }
           };
@@ -449,8 +449,8 @@
         return `<li class="history-item">
           <img class="history-thumb" src="${thumb}" alt="" onerror="this.src='${DEFAULT_COVER}'">
           <div class="history-meta">
-            <div class="history-song">${escHtml(item.titulo || '—')}</div>
-            <div class="history-artist">${escHtml(item.artista || '')}</div>
+            <div class="history-song">${escHtml(item.Desconocido || '—')}</div>
+            <div class="history-artist">${escHtml(item.Desconocido || '')}</div>
           </div>
           <span class="history-time">${hora}</span>
         </li>`;
