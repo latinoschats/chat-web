@@ -358,7 +358,25 @@
     if (errorBar) errorBar.style.display = show ? 'block' : 'none';
   }
 
-  
+  // ── Carátula ──
+  async function fetchCover(dj, calvin) {
+    if (!artista || !titulo) return DEFAULT_COVER;
+    try {
+      const r = await fetch(`${CARAT_URL}?artista=${encodeURIComponent(artista)}&titulo=${encodeURIComponent(titulo)}`);
+      if (!r.ok) return DEFAULT_COVER;
+      const d = await r.json();
+      return (d.imagen && !d.error) ? d.imagen : DEFAULT_COVER;
+    } catch { return DEFAULT_COVER; }
+  }
+
+  function setCover(src) {
+    coverWrap.classList.add('loading');
+    const tmp = new Image();
+    tmp.onload  = () => { coverImg.src = src; coverWrap.classList.remove('loading'); };
+    tmp.onerror = () => { coverImg.src = DEFAULT_COVER; coverWrap.classList.remove('loading'); };
+    tmp.src = src;
+  }
+
   // ── Metadatos ──
   // Valores genéricos que indican que no hay canción real
   const GEN_TITULOS  = new Set(['Sin título', 'En vivo', '']);
@@ -469,5 +487,3 @@
 </script>
 </body>
 </html>
-
-
