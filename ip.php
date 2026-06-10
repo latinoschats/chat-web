@@ -1,8 +1,7 @@
 <?php
  
-"; //Nombre del archivo donde se almacenard la información.
- 
-Sanchivo "data.txt
+
+Sanchivo "data.txt"; //Nombre del archivo donde se almacenard la información.
  
 $d_ip "Direccion IP: (S SERVER["REMOTE_ADDR"}}\n"; //String con la dirección IP incluida.
  
