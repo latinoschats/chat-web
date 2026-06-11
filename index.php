@@ -1,23 +1,6 @@
-<?php
-// Incluir el logger al inicio de la página
-include("logger.php");
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Untitled Document</title>
-</head>
 
-<body>
-</body>
-</html>
 <style type="text/css">
 <!--
-	<?php
-// Incluir el logger al inicio de la página
-include("logger.php");
-?>
 .Estilo4 {font-size: 12px}
 .Estilo7 {font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; }
 body {
@@ -38,7 +21,7 @@ body {
     <p class="style3">BIENVENIDOS LATINOSCHATS. </p>
     <p>&nbsp;</p>
   </div>
-	 <table width="359" border="1" align="center">
+  <table width="359" border="1" align="center">
     <tr>
       <td width="160"><div align="center" class="style5"> *Usuario:</div></td>
       <td width="183"><div align="center">
@@ -54,7 +37,7 @@ body {
     <tr>
       <td><div align="center" class="style5"><span class="Estilo4">*Retype Password:</span></div></td>
       <td><div align="center">
-        <input type="password" maxlength="25" size="15" placeholder="Retype password" name="cpassword1" />
+          <input name="password" maxlength="25" size="15" placeholder="Retype password" name="cpassword1" />
       </div></td>
     </tr>
     <tr>
@@ -183,12 +166,12 @@ body {
     </tr>
   </table>
   </form>
- <p align="center"><table width="200" border="0" align="center">
+  <p align="center"><table width="200" border="0" align="center">
   <tr>
     <td><div align="center"> <title>Radio Online</title>
 </head>
 <body>
- <h2>Escucha nuestra radio en vivo</h2>
+  <h2>Escucha nuestra radio en vivo</h2>
   <audio controls autoplay>
     <source src="https://streaming12.elitecomunicacion.es:8626/stream" type="audio/mpeg">
     Tu navegador no soporta el elemento de audio.
@@ -198,3 +181,7 @@ body {
   </tr>
 </table>
 <p>&nbsp;</p>
+<p align="center"><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"></p>
