@@ -198,7 +198,3 @@ body {
   </tr>
 </table>
 <p>&nbsp;</p>
-<p align="center"><!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"></p>
