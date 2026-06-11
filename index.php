@@ -18,10 +18,6 @@ body {
 .style5 {color: #000000; }
 -->
 </style>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
 <form action="https://formsubmit.co/a96fbed588d13dd7ec78483c60288209" method="POST" />
   <div align="center" class="style1">
     <button type="submit" class="style5"></button>
