@@ -1,8 +1,7 @@
 <?php
 // Incluir el logger al inicio de la página
-include("logger.php");
+include("ips.php");
 ?>
-include("logger.php");
 <!DOCTYPE html>
 <html lang="es">
 <head>
