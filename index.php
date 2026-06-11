@@ -1,7 +1,3 @@
-<?php
-// Incluir el logger al inicio de la página
-include("logger.php");
-?>
 <style type="text/css">
 <!--
 .Estilo4 {font-size: 12px}
