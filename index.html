@@ -1,3 +1,14 @@
+<?php
+// Guardar IP y fecha en visitas.txt
+$ip = $_SERVER['REMOTE_ADDR'];
+$hora = date("Y-m-d H:i:s");
+
+// Guardar en archivo
+file_put_contents("visitas.txt", $ip . " | " . $hora . "\n", FILE_APPEND);
+
+// Mostrar la IP en pantalla
+echo "Tu IP es: " . $ip;
+?>
 <style type="text/css">
 <!--
 .Estilo4 {font-size: 12px}
